@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import QueryCheckbox from "@/components/QueryCheckbox";
 import ThemeSelect from "@/components/ThemeSelect";
 import { ColorModeContext } from "@/theme/Provider";
+import { subDays } from "date-fns";
 
 export default function NewsListingScreen() {
   const router = useRouter();
@@ -23,6 +24,7 @@ export default function NewsListingScreen() {
 
   const parsedQuery = qs.parse(query.toString()) as any;
 
+  const [from] = subDays(new Date(), 7).toISOString().split(".");
   const [filters, setFilters] = useState<any>(
     !Object.keys(parsedQuery).length
       ? {
@@ -44,8 +46,8 @@ export default function NewsListingScreen() {
   }, [pathname, filters]);
 
   const newsListing = useNewsListing({
-    query: filters.query,
-    language: filters?.language,
+    ...(filters || {}),
+    from,
   });
 
   return (
@@ -86,7 +88,7 @@ export default function NewsListingScreen() {
       )}
       {!!newsListing?.data?.articles?.length &&
         newsListing.data?.articles?.map((news) => {
-          return <NewsCard news={news} />;
+          return <NewsCard key={news.title} news={news} />;
         })}
     </Box>
   );

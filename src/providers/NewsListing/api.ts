@@ -8,6 +8,6 @@ export async function fetch(
 ): Promise<NewsListing.ListingResponse> {
   return service({
     method: "GET",
-    url: `/v2/everything?q=${props.query}&apiKey=${API_KEY}&page=${props.page}&pageSize=${props.pageSize}&language=${props.language}&sortBy=publishedAt`,
+    url: `/v2/everything?q=${props.query}&apiKey=${API_KEY}&page=${props.page}&pageSize=${props.pageSize}&language=${props.language}&sortBy=publishedAt&from=${props.from}`,
   });
 }

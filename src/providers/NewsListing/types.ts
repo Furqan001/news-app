@@ -5,6 +5,7 @@ export namespace NewsListing {
     page?: number;
     pageSize?: number;
     language?: string;
+    from?: string;
   };
 
   export type ListingResponse = {
