@@ -12,6 +12,8 @@ import QueryCheckbox from "@/components/QueryCheckbox";
 import ThemeSelect from "@/components/ThemeSelect";
 import { ColorModeContext } from "@/theme/Provider";
 import { subDays } from "date-fns";
+import FormattedMessage from "@/theme/FormattedMessage";
+import messages from "./messages";
 
 export default function NewsListingScreen() {
   const router = useRouter();
@@ -81,15 +83,24 @@ export default function NewsListingScreen() {
       />
 
       {newsListing.isFetching && <Loader />}
-      {newsListing.isFetched && !newsListing?.data?.articles?.length && (
-        <Card>
-          <Box sx={{ textAlign: "center" }}>No news found</Box>
-        </Card>
-      )}
+      {newsListing.isFetched &&
+        !newsListing.isError &&
+        !newsListing?.data?.articles?.length && (
+          <Card>
+            <Box sx={{ textAlign: "center" }}>
+              <FormattedMessage {...messages.notFound} />
+            </Box>
+          </Card>
+        )}
       {!!newsListing?.data?.articles?.length &&
         newsListing.data?.articles?.map((news) => {
           return <NewsCard key={news.title} news={news} />;
         })}
+      {newsListing.isError && (
+        <Box sx={{ textAlign: "center" }}>
+          <FormattedMessage {...messages.error} />
+        </Box>
+      )}
     </Box>
   );
 }

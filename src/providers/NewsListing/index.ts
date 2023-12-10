@@ -24,5 +24,6 @@ export function useNewsListing(
   return useQuery({
     queryKey: getKeyFromProps(params, "LISTING"),
     queryFn: () => api.fetch(params),
+    retry: false,
   });
 }
